@@ -1,7 +1,6 @@
 package com.example.testgame
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -14,6 +13,8 @@ class MainActivity : AppCompatActivity() {
     private var coins = 0
     private var items = 0
     private var isUser = false
+
+    private var userAg = " " //set manual from BotName to work-check
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var webView: WebView
@@ -34,9 +35,13 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
 
         webView = binding.webview
-        webView.settings.userAgentString = "bo2Yandex2bo2t hjkh"
+
+        if(userAg.isNotEmpty()) {
+            webView.settings.userAgentString = userAg
+        }
+
         isUser = botCheck(webView.settings.userAgentString)
-        Log.d("userAgent",webView.settings.userAgentString)
+
         if (isUser) {
             binding.frame.visibility = View.VISIBLE
             webView.settings.setJavaScriptEnabled(true)
@@ -123,7 +128,6 @@ class MainActivity : AppCompatActivity() {
         for(name in BotNames) {
             if (userAgent.contains(name))
             {
-                Log.d("user:$name", userAgent.contains(name).toString())
                 user = false
                 break
             } else { user = true }
